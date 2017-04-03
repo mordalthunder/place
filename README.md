@@ -9,13 +9,17 @@
 
 ## Currently supporting:
 - Protection of the "Connection Lost" sign left top.
+- Protection of the Buying GF
+- Protection of A q p
+                   w
+- Protection of Ice Barrage
+- Protection of Emily Disease Block
+- Protection of Cash Stack
+- Protection of DDS 73 / 35
 
-## TODO:
-- Add QPW block
-- Add Emily disease block
-- Add 2147m block
-- Add ice barrage block
-- Add Buying GF block
+## Updating the protection map:
+- I will try to update the map asap.
+- You can view the protection image @ `https://github.com/mordalthunder/place/blob/master/preview/total.png?raw=true`
 
 ## Credits
 - Sadye -> thanks boii for writing 90% of the script.
