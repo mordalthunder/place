@@ -23,7 +23,7 @@ function start(){
 // Haalt de opdracht op van github
 function updateGoal() {
 	console.log("Updating target area... Ceterum censeo The Void esse delendam");
-	const url = 'https://github.com/mordalthunder/place/tree/master/data/data.json' + '?no-cache=' + (new Date).getTime();
+	const url = 'https://raw.githubusercontent.com/mordalthunder/place/master/data/data.json' + '?no-cache=' + (new Date).getTime();
 	//Hier komt later een functie om meerdere opdrachten te kunnen verdelen over gebruikers
 	fetch(url)
 	.then((resp) => resp.json())
