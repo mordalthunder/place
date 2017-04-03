@@ -1,6 +1,6 @@
 # /r/place for 2007scape
 
-##Steps to install!
+## Steps to install!
 1. Create a new bookmark
 2. Enter the following data as url: 
 `javascript:(function(){$.get('https://raw.githubusercontent.com/mordalthunder/place/master/script.js'+'?no-cache='+(new Date).getTime(),function(data){eval(data);});})();`
