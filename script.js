@@ -34,8 +34,8 @@ function updateGoal() {
 		drawingData.colors = data.colors;
 		if (currentVersion < data.newVersion) {
 			// dit moet nog iets beter uitgewerkt worden
-			document.body.innerHTML = '<center><br><br><br><br><br><br><h1 style="font-size: 20pt;">Je script is verouderd! Download alsjeblieft de nieuwe update (v' + data.newVersion + '). <br><br><br><p style="font-size: 14pt;">Als je het script hebt geïnstalleerd via een bladwijzer hoef je alleen de pagina te herladen en de bladwijzer opnieuw te gebruiken.</p><br><br><a href=https://raw.githubusercontent.com/Sadye/rPlace/master/script.js>Script</a> | <a target="_blank" href="https://discord.gg/EU4NhBn">Discord</a> | <a target="_blank" href="https://github.com/Sadye/rPlace">Github</a></h1></center>';
-			alert('Nieuwe update beschikbaar!');
+			//document.body.innerHTML = '<center><br><br><br><br><br><br><h1 style="font-size: 20pt;">Je script is verouderd! Download alsjeblieft de nieuwe update (v' + data.newVersion + '). <br><br><br><p style="font-size: 14pt;">Als je het script hebt geïnstalleerd via een bladwijzer hoef je alleen de pagina te herladen en de bladwijzer opnieuw te gebruiken.</p><br><br><a href=https://raw.githubusercontent.com/Sadye/rPlace/master/script.js>Script</a> | <a target="_blank" href="https://discord.gg/EU4NhBn">Discord</a> | <a target="_blank" href="https://github.com/Sadye/rPlace">Github</a></h1></center>';
+			alert('New update ready!, Please reload page and press the Bookmark again!!');
 			return;
 		}
 		if (drawingData.kill && !data.kill) {
@@ -51,7 +51,7 @@ function updateGoal() {
 	})
 	.catch(function(error) {
 		console.log(error);
-		console.log("Opnieuw proberen: ");
+		console.log("Trying again: ");
 		setTimeout(() => updateGoal(), 5000);
 	});
 }
@@ -59,7 +59,7 @@ function updateGoal() {
 function checkPixels() {
 	// killswitch
 	if (drawingData.kill) {
-		console.log("Script is gepauzeerd...");
+		console.log("Script has been paused...");
 		window.clearInterval(intervalId);
 		return;
 	}
@@ -103,8 +103,8 @@ function checkPixels() {
 		}
 		var ax = currentX + drawingData.startX;
 		var ay = currentY + drawingData.startY;
-		console.log("Aan het kijken naar de pixel op ("+ ax + ", " + ay +"). Het zou: " + getColorName(drawingData.colors[currentY][currentX]) + " moeten zijn. Het is momenteel: " + getColorName(getTileAt(ax, ay)));
-		console.log("Als je hieronder nog een check ziet, betekent het dat iemand anders de pixel al verbeterd heeft maar het canvas nog niet bijgewerkt is.");
+		console.log("Checking pixel on ("+ ax + ", " + ay +"). It should be: " + getColorName(drawingData.colors[currentY][currentX]) + ". It is currently: " + getColorName(getTileAt(ax, ay)));
+		console.log("If you see another check below it means someone was faster as you to update.");
 		// zoek naar de correcte kleur
 		$.get("https://www.reddit.com/api/place/pixel.json?x=" + ax + "&y=" + ay)
 		.then(res => {
@@ -135,7 +135,7 @@ function drawPixel() {
 		var ay = currentY + drawingData.startY;
 		var newColor = drawingData.colors[currentY][currentX];
 		// probeer het tekenen
-		console.log("Pixel tekenen op locatie (" + ax + ", " + ay + ") Kleur: "+getColorName(newColor)+" (oud: "+getColorName(getTileAt(ax, ay)) +") (https://www.reddit.com/r/place/#x=" + ax + "&y=" + ay + ")");
+		console.log("Drawing pixel on location (" + ax + ", " + ay + ") Color: "+getColorName(newColor)+" (old: "+getColorName(getTileAt(ax, ay)) +") (https://www.reddit.com/r/place/#x=" + ax + "&y=" + ay + ")");
 		$.ajax({ url: "https://www.reddit.com/api/place/draw.json", type: "POST",
 			headers: { "x-modhash": modhash }, data: { x: ax, y: ay, color: newColor }
 		})
@@ -145,13 +145,13 @@ function drawPixel() {
         	setTimeout(() => {
         		checkPixels()
         	}, res.wait_seconds * 1e3)
-        	console.log("Succes! Nieuwe poging over " + res.wait_seconds + " seconden.");
+        	console.log("Succes! New attempt in " + res.wait_seconds + " seconds.");
 
         	// laat mensen weten dat het nog werkt
         	secondsLeft = res.wait_seconds;
         	intervalId = setInterval( () => {
         		secondsLeft -= 10;
-        		console.log("Nog " + secondsLeft + " seconden tot de volgende actie!");
+        		console.log("" + secondsLeft + " Seconds until next action!");
         	}, 10 * 1e3)
         	return;
         })
@@ -163,19 +163,19 @@ function drawPixel() {
 	        	setTimeout(() => {
 	        		checkPixels()
 	        	}, Math.max(Math.ceil(res.responseJSON.wait_seconds), 10) * 1e3);
-	        	console.log("Probleem! Nieuwe poging over " + Math.max(Math.ceil(res.responseJSON.wait_seconds), 10) + " seconden.");
+	        	console.log("Problem, new attemplt in " + Math.max(Math.ceil(res.responseJSON.wait_seconds), 10) + " seconds.");
 	        	
 	        	// Info voor de gebruiker
 	        	secondsLeft = Math.ceil(res.responseJSON.wait_seconds)
 	        	intervalId = setInterval( () => {
 	        		secondsLeft -= 10;
-	        		console.log("Nog " + secondsLeft + " seconden tot de volgende actie!");
+	        		console.log("Another " + secondsLeft + " seconds until next action!");
 	        	}, 10 * 1e3)
 	        } else {
 	        	setTimeout(() => {
 	        		checkPixels()
 	        	}, 10* 1e3);
-	        	console.log("Probleem! Nieuwe poging over " + 10 + " seconden.");
+	        	console.log("problem! Trying again in " + 10 + " seconds.");
 	        }
 	        return;
 	    });
@@ -211,23 +211,23 @@ function getColorName(id) {
 		return "???";
 	}
 	const colorScheme = [
-	"wit",
-	"lgrijs",
-	"dgrijs",
-	"zwart",
-	"roze",
-	"rood",
-	"oranje",
-	"bruin",
-	"geel",
-	"lgroen",
-	"groen",
-	"lblauw",
-	"blauw",
-	"dblauw",
+	"white",
+	"lgrey",
+	"dgrey",
+	"black",
+	"pink",
+	"red",
+	"orange",
+	"brown",
+	"yellow",
+	"lgreen",
+	"green",
+	"lblue",
+	"blue",
+	"dblue",
 	"magenta",
-	"paars",
-	"niets",
+	"purple",
+	"nothing",
 	];
 	return colorScheme[id];
 }
