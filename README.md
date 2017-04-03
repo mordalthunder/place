@@ -16,3 +16,6 @@
 - Add 2147m block
 - Add ice barrage block
 - Add Buying GF block
+
+## Credits
+- Sadye -> thanks boii for writing 90% of the script.
